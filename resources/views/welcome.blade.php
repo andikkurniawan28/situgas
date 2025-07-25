@@ -9,7 +9,7 @@
             <div class="mb-4 p-4 border border-primary rounded bg-light shadow-sm">
                 <div class="d-flex align-items-center mb-3">
                     <i class="fas fa-tasks text-primary mr-2"></i>
-                    <h5 class="mb-0">Daftar Tugas (To Do)</h5>
+                    <h5 class="mb-0">To Do</h5>
                 </div>
                 <div class="row" id="todo-cards">
                     <!-- Cards akan dirender dengan JavaScript -->
@@ -49,7 +49,7 @@
                 const col = document.createElement('div');
                 col.className = 'col-md-4 col-lg-4 col-sm-12';
 
-                // Option untuk select progress
+                // Buat select option dari progressList
                 let progressOptions = '';
                 progressList.forEach(progress => {
                     const selected = progress.id == item.progress_id ? 'selected' : '';
@@ -71,6 +71,11 @@
                     </form>
                 `;
 
+                // Jika tipe 'tiket', tampilkan klien_nama
+                const klienInfo = item.tipe === 'tiket' && item.klien_nama ?
+                    `<p><strong>Klien:</strong> ${item.klien_nama}</p>` :
+                    '';
+
                 col.innerHTML = `
                 <div class="card mb-4 shadow-sm">
                     <div class="card-header d-flex justify-content-between align-items-center">
@@ -79,6 +84,7 @@
                     </div>
                     <div class="card-body">
                         <p>${item.keterangan}</p>
+                        ${klienInfo}
                         <div class="form-group">
                             ${progressDisplay}
                         </div>

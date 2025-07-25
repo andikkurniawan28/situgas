@@ -9,17 +9,19 @@ use App\Models\Tiket;
 class TiketBelumTerselesaikanController extends Controller
 {
     // Ambil tiket yang belum selesai (progress_id < 4)
-    public function index(Request $request)
+    public function index()
     {
         $user = Auth::user();
 
-        $tiketBelumSelesai = Tiket::where('didelegasikan_ke', $user->id)
+        $tiketBelumSelesai = Tiket::with('klien:id,nama') // Load relasi klien (ambil hanya id & nama)
+            ->where('didelegasikan_ke', $user->id)
             ->where('progress_id', '<', 4)
-            ->select('id', 'judul', 'keterangan', 'progress_id', 'created_at', 'updated_at')
+            ->select('id', 'judul', 'keterangan', 'progress_id', 'klien_id', 'created_at', 'updated_at')
             ->orderByDesc('created_at')
             ->get()
             ->map(function ($item) {
                 $item->tipe = 'tiket';
+                $item->klien_nama = $item->klien->nama ?? '-'; // Tambahkan properti klien_nama
                 return $item;
             });
 
