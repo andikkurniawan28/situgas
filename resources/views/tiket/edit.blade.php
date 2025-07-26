@@ -113,6 +113,24 @@
                             @enderror
                         </div>
 
+                        <!-- Progress -->
+                        <div class="form-group mt-3">
+                            <label for="progress_id">Progress</label>
+                            <select name="progress_id" id="progress_id"
+                                class="form-control @error('progress_id') is-invalid @enderror" required>
+                                <option value="" disabled>-- Pilih Progress --</option>
+                                @foreach ($progresses as $progress)
+                                    <option value="{{ $progress->id }}"
+                                        {{ (old('progress_id') ?? $tiket->progress_id) == $progress->id ? 'selected' : '' }}>
+                                        {{ $progress->nama }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('progress_id')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
                         <!-- Tombol -->
                         <button type="submit" class="btn btn-primary mt-4">Update</button>
                         <a href="{{ route('tiket.index') }}" class="btn btn-secondary mt-4">Kembali</a>

@@ -139,6 +139,7 @@ class TiketController extends Controller
 
         $request->validate([
             'klien_id' => 'required|exists:kliens,id',
+            'progress_id' => 'required|exists:progress,id',
             'jenis_tiket_id' => 'required|exists:jenis_tikets,id',
             'didelegasikan_ke' => 'required|exists:users,id',
             // 'dibuat_oleh' => 'required|exists:users,id',

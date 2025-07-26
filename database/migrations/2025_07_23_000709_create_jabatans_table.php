@@ -79,6 +79,16 @@ return new class extends Migration
             $table->boolean('akses_tambah_akun')->default(0);
             $table->boolean('akses_edit_akun')->default(0);
             $table->boolean('akses_hapus_akun')->default(0);
+            $table->boolean('akses_daftar_tagihan')->default(0);
+            $table->boolean('akses_tambah_tagihan')->default(0);
+            $table->boolean('akses_edit_tagihan')->default(0);
+            $table->boolean('akses_detail_tagihan')->default(0);
+            $table->boolean('akses_hapus_tagihan')->default(0);
+            $table->boolean('akses_daftar_pelunasan')->default(0);
+            $table->boolean('akses_tambah_pelunasan')->default(0);
+            $table->boolean('akses_edit_pelunasan')->default(0);
+            $table->boolean('akses_detail_pelunasan')->default(0);
+            $table->boolean('akses_hapus_pelunasan')->default(0);
         });
     }
 

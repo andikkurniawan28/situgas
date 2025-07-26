@@ -16,6 +16,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\JenisAkunController;
 use App\Http\Controllers\JenisTiketController;
 use App\Http\Controllers\LevelKlienController;
+use App\Http\Controllers\PelunasanController;
+use App\Http\Controllers\TagihanController;
 use App\Http\Controllers\TugasRutinController;
 use App\Http\Controllers\TiketBelumTerselesaikanController;
 
@@ -49,6 +51,8 @@ Route::resource('tugas', TugasController::class)
     ->parameters(['tugas' => 'tugas'])
     ->middleware(['auth']);
 Route::resource('/akun', AkunController::class)->middleware(['auth']);
+Route::resource('/tagihan', TagihanController::class)->middleware(['auth']);
+Route::resource('/pelunasan', PelunasanController::class)->middleware(['auth']);
 
 
 // API

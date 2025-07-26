@@ -125,6 +125,14 @@
                 <a class="collapse-item" href="{{ route('akun.index') }}">{{ ucwords(str_replace('_', ' ', 'akun')) }}</a>
                 @endif
 
+                @if(Auth()->user()->jabatan->akses_daftar_tagihan)
+                <a class="collapse-item" href="{{ route('tagihan.index') }}">{{ ucwords(str_replace('_', ' ', 'tagihan')) }}</a>
+                @endif
+
+                @if(Auth()->user()->jabatan->akses_daftar_pelunasan)
+                <a class="collapse-item" href="{{ route('pelunasan.index') }}">{{ ucwords(str_replace('_', ' ', 'pelunasan')) }}</a>
+                @endif
+
             </div>
         </div>
     </li>

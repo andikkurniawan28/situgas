@@ -75,6 +75,16 @@ class Jabatan extends Model
             'akses_tambah_akun',
             'akses_edit_akun',
             'akses_hapus_akun',
+            'akses_daftar_tagihan',
+            'akses_tambah_tagihan',
+            'akses_edit_tagihan',
+            'akses_detail_tagihan',
+            'akses_hapus_tagihan',
+            'akses_daftar_pelunasan',
+            'akses_tambah_pelunasan',
+            'akses_edit_pelunasan',
+            'akses_detail_pelunasan',
+            'akses_hapus_pelunasan',
         ];
         return $array_akses;
     }

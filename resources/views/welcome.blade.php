@@ -27,6 +27,17 @@
                 </div>
             </div>
 
+            {{-- Card Invoice Belum Lunas --}}
+            <div class="mb-4 p-4 border border-danger rounded bg-white shadow-sm">
+                <div class="d-flex align-items-center mb-3">
+                    <i class="fas fa-file-invoice-dollar text-danger mr-2"></i>
+                    <h5 class="mb-0">Invoice Belum Lunas</h5>
+                </div>
+                <div class="row" id="invoice-belum-lunas-cards">
+                    <!-- Cards akan dirender dengan JavaScript -->
+                </div>
+            </div>
+
         </div>
     </main>
 @endsection
