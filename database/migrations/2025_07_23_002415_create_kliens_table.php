@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('telepon')->nullable();
             $table->string('whatsapp')->nullable();
             $table->string('email')->nullable();
+            $table->integer('piutang')->default(0);
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
         });

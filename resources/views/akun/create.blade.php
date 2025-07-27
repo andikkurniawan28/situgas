@@ -11,12 +11,12 @@
                     <form action="{{ route('akun.store') }}" method="POST">
                         @csrf
 
-                        <!-- JenisAkun -->
+                        <!-- Jenis Akun -->
                         <div class="form-group">
-                            <label for="jenis_akun_id">JenisAkun</label>
+                            <label for="jenis_akun_id">Jenis Akun</label>
                             <select name="jenis_akun_id" id="jenis_akun_id"
                                 class="form-control @error('jenis_akun_id') is-invalid @enderror" required>
-                                <option value="" disabled selected>-- Pilih JenisAkun --</option>
+                                <option value="" disabled selected>-- Pilih Jenis Akun --</option>
                                 @foreach ($jenis_akuns as $jenis_akun)
                                     <option value="{{ $jenis_akun->id }}"
                                         {{ old('jenis_akun_id') == $jenis_akun->id ? 'selected' : '' }}>
@@ -82,7 +82,7 @@
         $(document).ready(function() {
             $('#jenis_akun_id').select2({
                 theme: 'bootstrap4',
-                placeholder: '-- Pilih JenisAkun --',
+                placeholder: '-- Pilih Jenis Akun --',
                 allowClear: true,
                 width: '100%'
             });

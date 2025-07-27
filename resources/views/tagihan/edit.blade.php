@@ -16,8 +16,8 @@
                         <div class="form-group mt-3">
                             <label for="terbit">Terbit</label>
                             <input type="date" name="terbit" id="terbit"
-                                class="form-control @error('terbit') is-invalid @enderror" value="{{ old('terbit', $tagihan->terbit) }}"
-                                required>
+                                class="form-control @error('terbit') is-invalid @enderror"
+                                value="{{ old('terbit', $tagihan->terbit) }}" required>
                             @error('terbit')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -27,8 +27,8 @@
                         <div class="form-group mt-3">
                             <label for="jatuh_tempo">Jatuh Tempo</label>
                             <input type="date" name="jatuh_tempo" id="jatuh_tempo"
-                                class="form-control @error('jatuh_tempo') is-invalid @enderror" value="{{ old('jatuh_tempo', $tagihan->jatuh_tempo) }}"
-                                required>
+                                class="form-control @error('jatuh_tempo') is-invalid @enderror"
+                                value="{{ old('jatuh_tempo', $tagihan->jatuh_tempo) }}" required>
                             @error('jatuh_tempo')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -65,9 +65,13 @@
                         <!-- Total -->
                         <div class="form-group mt-3">
                             <label for="total">Total (Rp)</label>
-                            <input type="number" name="total" id="total"
+                            <input type="text" id="total_display"
                                 class="form-control @error('total') is-invalid @enderror"
-                                value="{{ old('total', $tagihan->total) }}" required>
+                                value="{{ number_format(old('total', $tagihan->total), 0, ',', '.') }}" required>
+                            <input type="hidden" name="total" id="total"
+                                value="{{ old('total', $tagihan->total) }}">
+                            <input type="hidden" name="old_total" id="old_total"
+                                value="{{ old('total', $tagihan->total) }}">
                             @error('total')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -76,10 +80,12 @@
                         <!-- Status Lunas -->
                         <div class="form-group mt-3">
                             <label for="lunas">Status Pembayaran</label>
-                            <select name="lunas" id="lunas"
-                                class="form-control @error('lunas') is-invalid @enderror" required>
-                                <option value="0" {{ (old('lunas') ?? $tagihan->lunas) == 0 ? 'selected' : '' }}>Belum Lunas</option>
-                                <option value="1" {{ (old('lunas') ?? $tagihan->lunas) == 1 ? 'selected' : '' }}>Lunas</option>
+                            <select name="lunas" id="lunas" class="form-control @error('lunas') is-invalid @enderror"
+                                required>
+                                <option value="0" {{ (old('lunas') ?? $tagihan->lunas) == 0 ? 'selected' : '' }}>Belum
+                                    Lunas</option>
+                                <option value="1" {{ (old('lunas') ?? $tagihan->lunas) == 1 ? 'selected' : '' }}>Lunas
+                                </option>
                             </select>
                             @error('lunas')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -104,6 +110,25 @@
                 placeholder: '-- Pilih --',
                 allowClear: false,
                 width: '100%'
+            });
+
+            const formatRupiah = (number) => {
+                return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+            };
+
+            const unformatRupiah = (value) => {
+                return value.replace(/\./g, '');
+            };
+
+            const totalInput = document.getElementById('total_display');
+            const totalHidden = document.getElementById('total');
+
+            totalInput.addEventListener('input', function() {
+                let raw = unformatRupiah(this.value);
+                if (!isNaN(raw)) {
+                    this.value = formatRupiah(raw);
+                    totalHidden.value = raw;
+                }
             });
         });
     </script>

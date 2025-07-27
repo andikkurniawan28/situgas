@@ -12,6 +12,17 @@
                         @csrf
                         @method('PUT')
 
+                        <!-- Terbit -->
+                        <div class="form-group mt-3">
+                            <label for="terbit">Terbit</label>
+                            <input type="date" name="terbit" id="terbit"
+                                class="form-control @error('terbit') is-invalid @enderror"
+                                value="{{ old('terbit', $pelunasan->terbit) }}" required>
+                            @error('terbit')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
                         <!-- Tagihan -->
                         <div class="form-group">
                             <label for="tagihan_id">Tagihan</label>
@@ -22,6 +33,7 @@
                                     <option value="{{ $tagihan->id }}"
                                         {{ old('tagihan_id', $pelunasan->tagihan_id) == $tagihan->id ? 'selected' : '' }}>
                                         #{{ $tagihan->id }} - {{ $tagihan->keterangan }}
+                                        ({{ $tagihan->klien->nama }})
                                     </option>
                                 @endforeach
                             </select>
@@ -39,7 +51,7 @@
                                 @foreach ($akuns as $akun)
                                     <option value="{{ $akun->id }}"
                                         {{ old('akun_id', $pelunasan->akun_id) == $akun->id ? 'selected' : '' }}>
-                                        {{ $akun->nama }}
+                                        {{ $akun->nama }} ({{ $akun->kode }})
                                     </option>
                                 @endforeach
                             </select>
@@ -50,10 +62,12 @@
 
                         <!-- Total -->
                         <div class="form-group mt-3">
-                            <label for="total">Total Pelunasan (Rp)</label>
-                            <input type="number" name="total" id="total"
+                            <label for="total">Total (Rp)</label>
+                            <input type="text" id="total_display"
                                 class="form-control @error('total') is-invalid @enderror"
-                                value="{{ old('total', $pelunasan->total) }}" required>
+                                value="{{ number_format(old('total', $pelunasan->total), 0, ',', '.') }}" required>
+                            <input type="hidden" name="total" id="total"
+                                value="{{ old('total', $pelunasan->total) }}">
                             @error('total')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -77,6 +91,25 @@
                 placeholder: '-- Pilih --',
                 allowClear: false,
                 width: '100%'
+            });
+
+            const formatRupiah = (number) => {
+                return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+            };
+
+            const unformatRupiah = (value) => {
+                return value.replace(/\./g, '');
+            };
+
+            const totalInput = document.getElementById('total_display');
+            const totalHidden = document.getElementById('total');
+
+            totalInput.addEventListener('input', function () {
+                let raw = unformatRupiah(this.value);
+                if (!isNaN(raw)) {
+                    this.value = formatRupiah(raw);
+                    totalHidden.value = raw;
+                }
             });
         });
     </script>

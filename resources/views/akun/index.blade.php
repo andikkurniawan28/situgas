@@ -18,7 +18,7 @@
                                     <thead>
                                         <tr>
                                             <th>ID</th>
-                                            <th>JenisAkun</th>
+                                            <th>Jenis Akun</th>
                                             <th>Kode</th>
                                             <th>Nama</th>
                                             <th>Saldo Normal</th>

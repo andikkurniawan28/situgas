@@ -20,6 +20,7 @@
                                             <th>Nama</th>
                                             <th>{{ ucwords(str_replace('_', ' ', 'perusahaan')) }}</th>
                                             <th>{{ ucwords(str_replace('_', ' ', 'bidang_usaha')) }}</th>
+                                            <th>{{ ucwords(str_replace('_', ' ', 'piutang')) }}</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
@@ -63,6 +64,10 @@
                     {
                         data: 'bidang_usaha',
                         name: 'bidang_usaha'
+                    },
+                    {
+                        data: 'piutang',
+                        name: 'piutang'
                     },
                     {
                         data: 'aksi',

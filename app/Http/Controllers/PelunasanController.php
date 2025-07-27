@@ -22,9 +22,15 @@ class PelunasanController extends Controller
 
             return DataTables::of($data)
                 ->addIndexColumn()
-                ->addColumn('tagihan_keterangan', fn($row) => $row->tagihan->keterangan ?? '-')
-                ->addColumn('akun_nama', fn($row) => $row->akun->nama ?? '-')
+                ->addColumn('terbit', function ($row) {
+                    return date('d-m-Y', strtotime($row->terbit));
+                })
+                ->addColumn('tagihan_keterangan', fn($row) => '#' . $row->tagihan_id . ' - ' . $row->tagihan->keterangan . ' (' . $row->tagihan->klien->nama . ')' ?? '-')
+                ->addColumn('akun_nama', fn($row) => $row->akun->nama . ' (' . $row->akun->kode . ')' ?? '-')
                 ->addColumn('user_nama', fn($row) => $row->user->nama ?? '-')
+                ->addColumn('total', function ($row) {
+                    return number_format($row->total, 0, ',', '.');
+                })
                 ->addColumn('aksi', function ($row) {
                     $editUrl = route('pelunasan.edit', $row->id);
                     $showUrl = route('pelunasan.show', $row->id);
@@ -63,7 +69,7 @@ class PelunasanController extends Controller
             return $response;
         }
 
-        $request->request->add(['user_id' => auth()->id()]);
+        $request->merge(['user_id' => auth()->id()]);
 
         $request->validate([
             'tagihan_id' => 'required|exists:tagihans,id',
@@ -72,17 +78,18 @@ class PelunasanController extends Controller
             'user_id' => 'required|exists:users,id',
         ]);
 
-        Pelunasan::create($request->all());
+        // Simpan pelunasan
+        $pelunasan = Pelunasan::create($request->all());
 
-        // Update status tagihan ke lunas
-        $tagihan = Tagihan::find($request->tagihan_id);
-        if ($tagihan && $tagihan->total <= $request->total) {
-            $tagihan->lunas = true;
-            $tagihan->save();
-        }
+        // Catat ke buku besar
+        Pelunasan::catatBukuBesar($pelunasan);
+
+        // Update piutang dan cek pelunasan penuh
+        Pelunasan::catatPiutang($pelunasan);
 
         return redirect()->route('pelunasan.index')->with('success', 'Pelunasan berhasil ditambahkan');
     }
+
 
     public function show(Pelunasan $pelunasan)
     {
@@ -119,7 +126,12 @@ class PelunasanController extends Controller
             'total' => 'required|integer|min:0',
         ]);
 
+        $old_total = Pelunasan::whereId($pelunasan->id)->get()->last()->total;
+
         $pelunasan->update($request->all());
+
+        Pelunasan::updateBukuBesar($pelunasan);
+        Pelunasan::updatePiutang($pelunasan, $old_total);
 
         return redirect()->route('pelunasan.index')->with('success', 'Pelunasan berhasil diperbarui');
     }
@@ -129,6 +141,8 @@ class PelunasanController extends Controller
         if ($response = $this->checkIzin('akses_hapus_pelunasan')) {
             return $response;
         }
+
+        Pelunasan::resetPiutang($pelunasan);
 
         $pelunasan->delete();
 

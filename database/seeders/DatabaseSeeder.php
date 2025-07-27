@@ -3,12 +3,13 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Akun;
 use App\Models\User;
 use App\Models\Klien;
 use App\Models\Divisi;
 use App\Models\Jabatan;
-use App\Models\JenisAkun;
 use App\Models\Progress;
+use App\Models\JenisAkun;
 use App\Models\JenisTiket;
 use App\Models\LevelKlien;
 use Illuminate\Database\Seeder;
@@ -87,6 +88,31 @@ class DatabaseSeeder extends Seeder
             ['nama' => 'Modal'],
             ['nama' => 'Pendapatan'],
             ['nama' => 'Beban'],
+        ]);
+
+        Akun::insert([
+            ['jenis_akun_id' => 1, 'kode' => '1101', 'nama' => 'Kas', 'saldo_normal' => 'debit'],
+            ['jenis_akun_id' => 1, 'kode' => '1102', 'nama' => 'Bank', 'saldo_normal' => 'debit'],
+            ['jenis_akun_id' => 1, 'kode' => '1103', 'nama' => 'Piutang Usaha', 'saldo_normal' => 'debit'],
+            ['jenis_akun_id' => 1, 'kode' => '1104', 'nama' => 'Persediaan', 'saldo_normal' => 'debit'],
+            ['jenis_akun_id' => 1, 'kode' => '1201', 'nama' => 'Peralatan', 'saldo_normal' => 'debit'],
+
+            // KEWAJIBAN (2xxx)
+            ['jenis_akun_id' => 2, 'kode' => '2101', 'nama' => 'Hutang Usaha', 'saldo_normal' => 'kredit'],
+            ['jenis_akun_id' => 2, 'kode' => '2102', 'nama' => 'Hutang Bank', 'saldo_normal' => 'kredit'],
+
+            // MODAL (3xxx)
+            ['jenis_akun_id' => 3, 'kode' => '3101', 'nama' => 'Modal Pemilik', 'saldo_normal' => 'kredit'],
+            ['jenis_akun_id' => 3, 'kode' => '3102', 'nama' => 'Prive', 'saldo_normal' => 'debit'],
+
+            // PENDAPATAN (4xxx)
+            ['jenis_akun_id' => 4, 'kode' => '4101', 'nama' => 'Pendapatan Jasa', 'saldo_normal' => 'kredit'],
+            ['jenis_akun_id' => 4, 'kode' => '4102', 'nama' => 'Pendapatan Penjualan', 'saldo_normal' => 'kredit'],
+
+            // BEBAN (5xxx)
+            ['jenis_akun_id' => 5, 'kode' => '5101', 'nama' => 'Beban Gaji', 'saldo_normal' => 'debit'],
+            ['jenis_akun_id' => 5, 'kode' => '5102', 'nama' => 'Beban Sewa', 'saldo_normal' => 'debit'],
+            ['jenis_akun_id' => 5, 'kode' => '5103', 'nama' => 'Beban Listrik', 'saldo_normal' => 'debit'],
         ]);
     }
 }

@@ -21,6 +21,9 @@ class KlienController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('level_nama', fn($row) => $row->level_klien->nama ?? '-')
+                ->addColumn('piutang', function ($row) {
+                    return number_format($row->piutang, 0, ',', '.');
+                })
                 ->addColumn('aksi', function ($row) {
                     $editUrl = route('klien.edit', $row->id);
                     $deleteUrl = route('klien.destroy', $row->id);

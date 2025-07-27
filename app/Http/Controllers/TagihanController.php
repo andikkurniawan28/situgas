@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BukuBesar;
 use App\Models\Tagihan;
 use App\Models\Klien;
 use App\Models\User;
@@ -38,6 +39,15 @@ class TagihanController extends Controller
                     }
                 })
                 ->addIndexColumn()
+                ->addColumn('terbit', function ($row) {
+                    return date('d-m-Y', strtotime($row->terbit));
+                })
+                ->addColumn('jatuh_tempo', function ($row) {
+                    return date('d-m-Y', strtotime($row->jatuh_tempo));
+                })
+                ->addColumn('total', function ($row) {
+                    return number_format($row->total, 0, ',', '.');
+                })
                 ->addColumn('klien_nama', function ($row) {
                     return $row->klien->nama ?? '-';
                 })
@@ -95,11 +105,12 @@ class TagihanController extends Controller
             'klien_id' => 'required|exists:kliens,id',
             'keterangan' => 'required|string',
             'total' => 'required|integer|min:0',
-            // 'lunas' => 'nullable|boolean',
             'user_id' => 'required|exists:users,id',
         ]);
 
-        Tagihan::create($request->all());
+        $tagihan = Tagihan::create($request->all());
+        Tagihan::catatBukuBesar($tagihan);
+        Tagihan::catatPiutang($tagihan);
 
         return redirect()->route('tagihan.index')->with('success', 'Tagihan berhasil ditambahkan');
     }
@@ -140,10 +151,12 @@ class TagihanController extends Controller
             'keterangan' => 'required|string',
             'total' => 'required|integer|min:0',
             'lunas' => 'required|boolean',
-            // 'user_id' => 'required|exists:users,id',
         ]);
 
-        $tagihan->update($request->all());
+        $tagihan->update($request->except('old_total'));
+
+        Tagihan::updateBukuBesar($tagihan);
+        Tagihan::updatePiutang($tagihan, $request);
 
         return redirect()->route('tagihan.index')->with('success', 'Tagihan berhasil diperbarui');
     }
@@ -154,6 +167,7 @@ class TagihanController extends Controller
             return $response;
         }
 
+        Tagihan::resetPiutang($tagihan);
         $tagihan->delete();
 
         return redirect()->route('tagihan.index')->with('success', 'Tagihan berhasil dihapus');

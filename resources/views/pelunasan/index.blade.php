@@ -18,11 +18,12 @@
                                     <thead>
                                         <tr>
                                             <th>ID</th>
+                                            <th>Terbit</th>
                                             <th>Tagihan</th>
                                             <th>Akun</th>
                                             <th>Total</th>
                                             <th>Dibuat Oleh</th>
-                                            <th>Dibuat Pada</th>
+                                            {{-- <th>Dibuat Pada</th> --}}
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
@@ -47,11 +48,12 @@
                 ajax: '{{ route('pelunasan.index') }}',
                 columns: [
                     { data: 'id', name: 'id' },
+                    { data: 'terbit', name: 'terbit' },
                     { data: 'tagihan_keterangan', name: 'tagihan.keterangan' },
                     { data: 'akun_nama', name: 'akun.nama' },
-                    { data: 'total', name: 'total', render: $.fn.dataTable.render.number(',', '.', 0, 'Rp ') },
+                    { data: 'total', name: 'total' },
                     { data: 'user_nama', name: 'user.nama' },
-                    { data: 'created_at', name: 'created_at' },
+                    // { data: 'created_at', name: 'created_at' },
                     { data: 'aksi', name: 'aksi', orderable: false, searchable: false }
                 ]
             });
